@@ -62,6 +62,11 @@ namespace MAUIBlazorLoadLocalImage.Services
         {
             await InitModule();
 
+            if(string.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+
             if (urls.ContainsKey(path))
             {
                 urls.TryRemove(path, out string? url);

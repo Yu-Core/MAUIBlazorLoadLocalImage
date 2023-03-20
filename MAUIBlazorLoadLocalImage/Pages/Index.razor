@@ -19,9 +19,12 @@ Welcome to your new app.
     private ILocalImageService LocalImageService { get; set; }
     private string text;
     private string imageUrl;
+    private string path;
     private async Task LoadLocalImage()
     {
-        imageUrl = await LocalImageService.ToUrl(text);
+        await LocalImageService.RevokeUrl(path);
+        path = text;
+        imageUrl = await LocalImageService.ToUrl(path);
     }
     private async Task SelectLocalImage()
     {
@@ -34,7 +37,8 @@ Welcome to your new app.
         {
             return;
         }
-        text = photo.FullPath;
-        imageUrl = await LocalImageService.ToUrl(text);
+        await LocalImageService.RevokeUrl(path);
+        path = text = photo.FullPath;
+        imageUrl = await LocalImageService.ToUrl(path);
     }
 }
