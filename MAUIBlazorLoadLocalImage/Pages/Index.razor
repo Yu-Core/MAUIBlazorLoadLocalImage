@@ -1,0 +1,25 @@
+﻿@page "/"
+@using MAUIBlazorLoadLocalImage.IServices
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<input type="text" @bind-value="@text" />
+<button @onclick="LoadLocalImage">确定</button>
+<img src="@imageUrl" />
+
+
+
+@code{
+    [Inject]
+    private ILocalImageService LocalImageService { get; set; }
+    private string text;
+    private string imageUrl;
+    private async Task LoadLocalImage()
+    {
+        imageUrl = await LocalImageService.ToUrl(text);
+    }
+}
