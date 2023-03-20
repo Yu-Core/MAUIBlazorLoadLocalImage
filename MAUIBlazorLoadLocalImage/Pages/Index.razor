@@ -9,17 +9,32 @@ Welcome to your new app.
 
 <input type="text" @bind-value="@text" />
 <button @onclick="LoadLocalImage">确定</button>
+<button @onclick="SelectLocalImage">选择</button>
 <img src="@imageUrl" />
 
 
 
-@code{
+@code {
     [Inject]
     private ILocalImageService LocalImageService { get; set; }
     private string text;
     private string imageUrl;
     private async Task LoadLocalImage()
     {
+        imageUrl = await LocalImageService.ToUrl(text);
+    }
+    private async Task SelectLocalImage()
+    {
+        FileResult photo = await MediaPicker.Default.PickPhotoAsync();
+        if (photo == null)
+        {
+            return;
+        }
+        if (string.IsNullOrEmpty(photo.FullPath))
+        {
+            return;
+        }
+        text = photo.FullPath;
         imageUrl = await LocalImageService.ToUrl(text);
     }
 }
